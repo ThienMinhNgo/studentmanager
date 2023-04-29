@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% comment %} {% load static %} {% endcomment %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load crispy_forms_tags %}
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static '\student\bootstrap\bootstrap.min.css' %}">{% endcomment %}
+</head> 
+<body>
+  
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="mynavbar">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="navbar-brand" href="javascript:void(0)">Student Manager</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <a class="navbar-brand" href="javascript:void(0)">Thiennm6</a>
+        </form>
+      </div>
+  </nav>
+
+  <div>
+      <div class="container mt-3">
+          <form action="{% url 'student:student' %}" method="post">
+              {% csrf_token %}
+              {{ pt|crispy }}
+              {% comment %} {{pt.as_p}} {% endcomment %}
+              <input type="submit" name="submit_button" class="btn btn-primary" value="Add">
+              <input type="submit" name="submit_button" class="btn btn-info" value="Update">
+              <input type="submit" name="submit_button" class="btn btn-danger" value="Delete">
+              
+          </form>
+      </div>
+  
+      <div class="container mt-3">
+          <table class="table">
+            <thead class="table-dark">
+              <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for student in inf %}
+                  <tr>
+                      <td>{{student.studentid}}</td>
+                      <td>{{student.name}}</td>
+                      <td>{{student.email}}</td>
+                      <td>{{student.phone}}</td>
+                      <td>{{student.address}}</td>
+                  </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      </div>
+      <div class="container mt-3" style="color:red">
+        <h3>
+          {{ noti}}
+        </h3>
+      </div>
+  </div>
+
+    {% comment %} <script src="{% static './bootstrap/bootstrap.js' %}"></script> {% endcomment %}
+</body>
+</html>
