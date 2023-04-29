@@ -4,10 +4,6 @@ from .forms import StudentForm
 from django.views import View
 from .models import Student
 
-
-def index(request):
-    return render(request,"student/base.html")
-
 class StudentView(View):
 
     def get(self, request):
