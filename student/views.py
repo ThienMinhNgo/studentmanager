@@ -3,16 +3,27 @@ from django.shortcuts import HttpResponse
 from .forms import StudentForm
 from django.views import View
 from .models import Student
+import socket
+
 
 class StudentView(View):
-
+    
     def get(self, request):
+        try:
+            HOSTNAME = socket.gethostname()
+        except:
+            HOSTNAME = 'localhost'
 
         pt = StudentForm
         inf = Student.objects.all()
-        return render(request, "student/student.html", {'pt': pt,'inf': inf})
+        return render(request, "student/student.html", {'pt': pt,'inf': inf, 'hostname': HOSTNAME})
 
     def post(self, request):
+        try:
+            HOSTNAME = socket.gethostname()
+        except:
+            HOSTNAME = 'localhost'
+
         pt = StudentForm
         if request.method == "POST":
             cf = StudentForm(request.POST)
@@ -27,11 +38,11 @@ class StudentView(View):
 
                     saveCF.save()
                     inf = Student.objects.all()
-                    return render(request, "student/student.html", {'pt': pt,'inf': inf})
+                    return render(request, "student/student.html", {'pt': pt,'inf': inf, 'hostname': HOSTNAME})
                 else:
                     noti = "add data Fail"
                     inf = Student.objects.all()
-                    return render(request, "student/student.html", {'pt': pt,'inf': inf,'noti': noti})
+                    return render(request, "student/student.html", {'pt': pt,'inf': inf,'noti': noti, 'hostname': HOSTNAME})
 
             if request.POST['submit_button'] == 'Delete':
 
@@ -39,7 +50,7 @@ class StudentView(View):
                 Student.objects.filter(studentid = id).delete()
 
                 inf = Student.objects.all()
-                return render(request, "student/student.html", {'pt': pt,'inf': inf})
+                return render(request, "student/student.html", {'pt': pt,'inf': inf, 'hostname': HOSTNAME})
 
             
             if request.POST['submit_button'] == 'Update':
@@ -61,8 +72,8 @@ class StudentView(View):
                     student.save()
 
                     inf = Student.objects.all()
-                    return render(request, "student/student.html", {'pt': pt,'inf': inf})
+                    return render(request, "student/student.html", {'pt': pt,'inf': inf, 'hostname': HOSTNAME})
                 except Exception as e:
                     noti = str(e)
                     inf = Student.objects.all()
-                    return render(request, "student/student.html", {'pt': pt,'inf': inf,'noti': noti})
+                    return render(request, "student/student.html", {'pt': pt,'inf': inf,'noti': noti, 'hostname': HOSTNAME})
